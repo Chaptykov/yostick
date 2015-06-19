@@ -48,7 +48,7 @@
 
             y.elements.sections.each(function(i) {
                 var section = $(this),
-                    sectionHeaderWrapper = section.find(y.params.sectionHeaderWrapper)
+                    sectionHeaderWrapper = section.find(y.params.sectionHeaderWrapper),
                     sectionHeader = section.find(y.params.sectionHeader);
 
                 data[i] = {
@@ -108,6 +108,7 @@
                     styles = {
                         position: 'absolute',
                         top: 0,
+                        width: this.data[i].width + 'px',
                         transform: 'translateY(' + top + 'px)'
                     };
                 } else {
@@ -159,18 +160,20 @@
         }
     };
 
+    Yostick.prototype = methods;
+
     function Yostick(root, options) {
-        var instance = this instanceof Yostick ? this : $.extend({}, methods),
+        var instance = this instanceof Yostick ? this : $.extend({}, Yostick.prototype),
             y = instance;
 
         var params = $.extend({
 
             // Selectors
-            scroller: '.scroller',
-            section: '.article',
-            sectionContent: '.article__list',
-            sectionHeaderWrapper: '.article__header',
-            sectionHeader: '.article__header-in',
+            scroller: '.yostick__scroller',
+            section: '.yostick__section',
+            sectionContent: '.yostick__list',
+            sectionHeaderWrapper: '.yostick__section-header',
+            sectionHeader: '.yostick__section-header-in',
 
             // Modifiers
             sectionIsCollapsed: '_collapsed',
@@ -206,7 +209,7 @@
             return methods[method].apply(this, Array.prototype.slice.call(args, 1));
         } else if (typeof method == 'object' || !method) {
             return this.each(function() {
-                console.log(new Yostick($(this), args));
+                return new Yostick($(this), args);
             });
         } else {
             $.error('Unknown method: ' +  method);
