@@ -1,0 +1,31 @@
+{
+  "name": "yostick",
+  "version": "1.0.0",
+  "description": "jQuery plugin for sticky headers in scrollable container",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Chaptykov/yostick.git"
+  },
+  "keywords": [
+    "translit",
+    "transliteration",
+    "js"
+  ],
+  "author": "Tim Chaptykov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Chaptykov/yostick/issues"
+  },
+  "homepage": "https://github.com/Chaptykov/yostick",
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.5.2",
+    "gulp-jshint": "^1.11.0",
+    "gulp-mocha": "^2.1.0",
+    "gulp-uglify": "^1.2.0"
+  }
+}
