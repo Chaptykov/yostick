@@ -157,6 +157,22 @@
 
             scroller.scrollTop(newPosition);
             y._apply(y._getCurrentSection(newPosition), newPosition);
+        },
+
+        update: function() {
+            var y = this,
+                position;
+
+            y.elements = {
+                scroller: y.root.find(y.params.scroller),
+                sections: y.root.find(y.params.section)
+            };
+
+            y.data = y._getData(true);
+
+            position = y.elements.scroller.scrollTop();
+
+            y._apply(y._getCurrentSection(position), position);
         }
     };
 
