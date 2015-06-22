@@ -173,7 +173,37 @@
             position = y.elements.scroller.scrollTop();
 
             y._apply(y._getCurrentSection(position), position);
+        },
+
+        destroy: function() {
+            var y = this;
+
+            // Unbind listeners
+            for (var i = 0, len = y.listeners.length; i < len; i++) {
+                $(y.listeners[i].selector).off(
+                    y.listeners[i].eventType,
+                    y.listeners[i].handler
+                );
+            }
+
+            // Remove custom styles
+            y.elements.sections.each(function() {
+                var it = $(this);
+
+                it
+                    .removeAttr('data-yostick-section-id')
+                    .find(y.params.sectionHeader)
+                    .removeClass([
+                        y.params.sectionIsCollapsed,
+                        y.params.sectionTitleIsSticked,
+                        y.params.sectionTitleIsHustled
+                    ].join(' '))
+                    .attr('style', '');
+            });
+
+            delete y.root[0].yostick;
         }
+
     };
 
     Yostick.prototype = methods;
