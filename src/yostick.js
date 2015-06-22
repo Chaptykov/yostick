@@ -206,10 +206,16 @@
         var args = arguments;
 
         if (methods[method]) {
-            return methods[method].apply(this, Array.prototype.slice.call(args, 1));
+            return this.each(function() {
+                var instance = this && this.yostick;
+
+                if (instance) {
+                    methods[method].apply(instance, Array.prototype.slice.call(args, 1));
+                }
+            });
         } else if (typeof method == 'object' || !method) {
             return this.each(function() {
-                return new Yostick($(this), args);
+                this.yostick =  new Yostick($(this), args);
             });
         } else {
             $.error('Unknown method: ' +  method);
