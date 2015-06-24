@@ -3,6 +3,41 @@
         return;
     }
 
+    /**
+     * Debounce декоратор
+     *
+     * @param {function} fn Функция
+     * @param {number} timeout Таймаут в миллисекундах
+     * @param {bool}
+     * @param {object} ctx Контекст вызова
+     */
+    function debounce(fn, timeout, invokeAsap, ctx) {
+        if (arguments.length == 3 && typeof invokeAsap != 'boolean') {
+            ctx = invokeAsap;
+            invokeAsap = false;
+        }
+
+        var timer;
+
+        return function() {
+            var args = arguments;
+
+            ctx = ctx || this;
+            if (invokeAsap && !timer) {
+                fn.apply(ctx, args);
+            }
+
+            clearTimeout(timer);
+
+            timer = setTimeout(function() {
+                if (!invokeAsap) {
+                    fn.apply(ctx, args);
+                }
+                timer = null;
+            }, timeout);
+        };
+    }
+
     var methods = {
 
         _getHandlers: function() {
@@ -12,10 +47,14 @@
                 eventType: 'scroll',
                 selector: y.params.scroller,
                 handler: function() {
-                    var target = $(this);
-
-                    y._onScroll(target);
+                    y._onScroll();
                 }
+            });
+
+            y.listeners.push({
+                eventType: 'resize',
+                selector: 'html, body',
+                handler: debounce(y.update, 1000)
             });
 
             if (y.params.collapseOnClick) {
