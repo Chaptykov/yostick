@@ -209,6 +209,10 @@
 
             scroller.scrollTop(newPosition);
             y._apply(y._getCurrentSection(newPosition), newPosition);
+
+            if (y.params.onCollapse) {
+                y.params.onCollapse();
+            }
         },
 
         update: function() {
