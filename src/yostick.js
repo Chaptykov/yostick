@@ -70,7 +70,7 @@
             }
         },
 
-        _setListeners: function() {
+        _bindListeners: function() {
             var y = this;
 
             for (var i = 0, len = y.listeners.length; i < len; i++) {
@@ -79,6 +79,19 @@
                     y.listeners[i].handler
                 );
             }
+        },
+
+        _unbindListeners: function() {
+            var y = this;
+
+            for (var i = 0, len = y.listeners.length; i < len; i++) {
+                $(y.listeners[i].selector).off(
+                    y.listeners[i].eventType,
+                    y.listeners[i].handler
+                );
+            }
+
+            y.listeners = [];
         },
 
         _getData: function(isInitial) {
@@ -207,6 +220,10 @@
                 sections: y.root.find(y.params.section)
             };
 
+            y._unbindListeners();
+            y._getHandlers();
+            y._bindListeners();
+
             y.data = y._getData(true);
 
             position = y.elements.scroller.scrollTop();
@@ -218,12 +235,7 @@
             var y = this;
 
             // Unbind listeners
-            for (var i = 0, len = y.listeners.length; i < len; i++) {
-                $(y.listeners[i].selector).off(
-                    y.listeners[i].eventType,
-                    y.listeners[i].handler
-                );
-            }
+            y._unbindListeners();
 
             // Remove custom styles
             y.elements.sections.each(function() {
@@ -282,7 +294,7 @@
         y.listeners = [];
 
         y._getHandlers();
-        y._setListeners();
+        y._bindListeners();
     }
 
     window.yostick = Yostick;
@@ -300,7 +312,7 @@
             });
         } else if (typeof method == 'object' || !method) {
             return this.each(function() {
-                this.yostick =  new Yostick($(this), args);
+                this.yostick =  new Yostick($(this), args[0]);
             });
         } else {
             $.error('Unknown method: ' +  method);
