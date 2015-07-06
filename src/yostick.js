@@ -133,7 +133,7 @@
                 current = y.data[i];
                 next = y.data[i + 1];
 
-                if (current.position < position && (next.position > position || i + 1 == len)) {
+                if (current.position < position && (!next || next.position > position)) {
                     return i;
                 }
             }
@@ -152,7 +152,7 @@
                     top = 0;
                     modifiers.push(params.sectionTitleIsSticked);
 
-                    if (next.position < position + current.height) {
+                    if (next && (next.position < position + current.height)) {
                         top = next.position - position - current.height;
                         modifiers.push(params.sectionTitleIsHustled);
                     }
